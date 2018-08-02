@@ -48,9 +48,6 @@ return [
         'settings' => [
             'class' => 'backend\modules\settings\Module',
         ],
-        'reports' => [
-            'class' => 'backend\modules\reports\Module',
-        ],
     ],
     'components' => [
         'request' => [

@@ -352,7 +352,7 @@ class CloseEstimateController extends Controller {
 
     public function actionReport() {
         empty(Yii::$app->session['fda-report']);
-//                $invoice_type = $_POST['invoice_type'];
+        $duplicate_id = $_POST['report_id'];
         $app = $_POST['app_id'];
         $principp = $_POST['fda'];
         $invoice_date = Yii::$app->ChangeDateFormate->SingleDateFormat($_POST['invoice_date']);
@@ -367,6 +367,7 @@ class CloseEstimateController extends Controller {
             'ports' => $ports,
             'principp' => $principp,
             'invoice_date' => $invoice_date,
+            'duplicate_id' => $duplicate_id,
             'save' => true,
             'print' => false,
         ]);
@@ -377,6 +378,7 @@ class CloseEstimateController extends Controller {
                     'ports' => $ports,
                     'principp' => $principp,
                     'invoice_date' => $invoice_date,
+                    'duplicate_id' => $duplicate_id,
                     'save' => false,
                     'print' => true,
         ]));
@@ -388,8 +390,8 @@ class CloseEstimateController extends Controller {
      * return to the close-estimate 'add' view page
      */
 
-    public function actionSaveAllReport($appintment_id, $principal_id, $est_id) {
-        $model_report = $this->InvoiceGeneration($appintment_id, $principal_id, $est_id);
+    public function actionSaveAllReport($appintment_id, $principal_id, $est_id, $duplicate_id) {
+        $model_report = $this->InvoiceGeneration($appintment_id, $principal_id, $est_id, $duplicate_id);
         Yii::$app->SetValues->Attributes($model_report);
         if ($model_report->save(false)) {
             $this->UpdateFundAllocation($appintment_id, $principal_id);
@@ -426,7 +428,7 @@ class CloseEstimateController extends Controller {
      * return model
      */
 
-    public function InvoiceGeneration($appintment_id, $principal_id, $est_id) {
+    public function InvoiceGeneration($appintment_id, $principal_id, $est_id, $duplicate_id) {
         $appointment = Appointment::findOne($appintment_id);
         $last_data = FdaReport::find()->orderBy(['id' => SORT_DESC])->where(['principal_id' => $principal_id])->one();
         $last_report_saved = FdaReport::find()->orderBy(['id' => SORT_DESC])->where(['appointment_id' => $appintment_id, 'principal_id' => $principal_id])->one();
@@ -451,7 +453,12 @@ class CloseEstimateController extends Controller {
         $app_no = ltrim(substr($appointment->appointment_no, -4), '0');
 //        $invoice_number = $new_port_code . '-' . $app_no . '-' . $princip_id . '-' . date("y");
         $invoice_number = 'ESLRAK-' . date("Y");
-        $model_report = new FdaReport();
+        if ($duplicate_id != '') {
+            $model_report = FdaReport::find()->where(['report_id' => $duplicate_id])->one();
+        }
+        if (empty($model_report)) {
+            $model_report = new FdaReport();
+        }
         $model_report->appointment_id = $appintment_id;
         $model_report->estimate_id = $est_id;
         $model_report->principal_id = $principal_id;
@@ -474,11 +481,15 @@ class CloseEstimateController extends Controller {
                 $model_report->sub_invoice = $last_report_saved->sub_invoice;
             }
         }
-        if (empty($last_invoice->report_id)) {
-            $model_report->report_id = sprintf('%04d', 1);
+        if ($duplicate_id == '') {
+            if (empty($last_invoice->report_id)) {
+                $model_report->report_id = sprintf('%04d', 1);
+            } else {
+                $l1 = $last_invoice->report_id + 1;
+                $model_report->report_id = sprintf('%04d', $l1);
+            }
         } else {
-            $l1 = $last_invoice->report_id + 1;
-            $model_report->report_id = sprintf('%04d', $l1);
+            $model_report->report_id = $duplicate_id;
         }
         $model_report->invoice_number = $invoice_number . '-' . $model_report->report_id;
         return $model_report;

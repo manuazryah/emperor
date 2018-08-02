@@ -477,7 +477,12 @@ and open the template in the editor.
                                     </td>
                                     <td style="width: 13%;font-weight: bold;text-align: right;font-size: 11px;"><?= Yii::$app->SetValues->NumberFormat($close_estimate->fda); ?></td>
                                     <?php
-                                    $percent = ($close_estimate->tax_amount / $close_estimate->fda) * 100;
+//                                    $percent = ($close_estimate->tax_amount / $close_estimate->fda) * 100;
+                                    if ($close_estimate->tax_id != '') {
+                                        $percent = common\models\TaxMaster::findOne($close_estimate->tax_id)->value;
+                                    } else {
+                                        $percent = 0;
+                                    }
                                     ?>
                                     <td style="width: 11%;font-weight: bold;text-align: right;font-size: 11px;"><?= ceil($percent); ?></td>
                                     <td style="width: 15%;font-weight: bold;text-align: right;font-size: 11px;"><?= Yii::$app->SetValues->NumberFormat($close_estimate->fda); ?></td>

@@ -245,6 +245,8 @@ use dosamigos\ckeditor\CKEditor;
 <link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2.css">
 <link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2-bootstrap.css">
 <script src="<?= Yii::$app->homeUrl; ?>js/select2/select2.min.js"></script>
+<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/multiselect/css/multi-select.css">
+<script src="<?= Yii::$app->homeUrl; ?>js/multiselect/js/jquery.multi-select.js"></script>
 <script>
     $("document").ready(function () {
         $('.ports').change(function () {
@@ -301,40 +303,40 @@ use dosamigos\ckeditor\CKEditor;
 <script>
     $("document").ready(function () {
 
-        $('#appointment-principal').change(function (e) {
-
-            var principal = $(this).val();
-            var No_principal = $('#appointment-no_of_principal').val();
-            if (principal.length == No_principal) {
-                //alert("Principal same as Number of principal");
-                $('#s2id_autogen4').prop('disabled', true);
-                $('.overly').addClass('over-active');
-            } else if (principal.length < No_principal) {
-                $('#s2id_autogen4').prop('disabled', false);
-                $('.overly').removeClass('over-active');
-            } else if (principal.length > No_principal) {
-                var last = principal[principal.length - 1];
-                $("#appointment-principal option[value='" + last + "']").prop("selected", false);
-                alert("Choose Principal same as Number of principal");
-                $('#s2id_autogen4').prop('disabled', true);
-                $('.overly').addClass('over-active');
-            }
-
-        });
-        $('#appointment-no_of_principal').change(function (e) {
-            var principal = $('#appointment-no_of_principal').val();
-            var No_principal = $(this).val();
-            if (principal.length == No_principal) {
-                $('#s2id_autogen4').prop('disabled', true);
-                $('.overly').addClass('over-active');
-            } else if (principal.length < No_principal) {
-                $('#s2id_autogen4').prop('disabled', false);
-                $('.overly').removeClass('over-active');
-            } else if (principal.length > No_principal) {
-                $('#s2id_autogen4').prop('disabled', true);
-                $('.overly').addClass('over-active');
-            }
-        });
+//        $('#appointment-principal').change(function (e) {
+//
+//            var principal = $(this).val();
+//            var No_principal = $('#appointment-no_of_principal').val();
+//            if (principal.length == No_principal) {
+//                //alert("Principal same as Number of principal");
+//                $('#s2id_autogen4').prop('disabled', true);
+//                $('.overly').addClass('over-active');
+//            } else if (principal.length < No_principal) {
+//                $('#s2id_autogen4').prop('disabled', false);
+//                $('.overly').removeClass('over-active');
+//            } else if (principal.length > No_principal) {
+//                var last = principal[principal.length - 1];
+//                $("#appointment-principal option[value='" + last + "']").prop("selected", false);
+//                alert("Choose Principal same as Number of principal");
+//                $('#s2id_autogen4').prop('disabled', true);
+//                $('.overly').addClass('over-active');
+//            }
+//
+//        });
+//        $('#appointment-no_of_principal').change(function (e) {
+//            var principal = $('#appointment-no_of_principal').val();
+//            var No_principal = $(this).val();
+//            if (principal.length == No_principal) {
+//                $('#s2id_autogen4').prop('disabled', true);
+//                $('.overly').addClass('over-active');
+//            } else if (principal.length < No_principal) {
+//                $('#s2id_autogen4').prop('disabled', false);
+//                $('.overly').removeClass('over-active');
+//            } else if (principal.length > No_principal) {
+//                $('#s2id_autogen4').prop('disabled', true);
+//                $('.overly').addClass('over-active');
+//            }
+//        });
     });</script>
 <script type="text/javascript">
     jQuery(document).ready(function ($)
@@ -394,11 +396,6 @@ use dosamigos\ckeditor\CKEditor;
 </style>
 
 
-<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2.css">
-<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2-bootstrap.css">
-<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/multiselect/css/multi-select.css">
-<script src="<?= Yii::$app->homeUrl; ?>js/select2/select2.min.js"></script>
-<script src="<?= Yii::$app->homeUrl; ?>js/multiselect/js/jquery.multi-select.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function ($)
     {
@@ -437,11 +434,6 @@ use dosamigos\ckeditor\CKEditor;
 
     });
 </script>
-
-
-<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2.css">
-<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2-bootstrap.css">
-<script src="<?= Yii::$app->homeUrl; ?>js/select2/select2.min.js"></script>
 <script>
     $(document).ready(function () {
 

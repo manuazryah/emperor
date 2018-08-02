@@ -333,9 +333,9 @@ and open the template in the editor.
                                 } else {
                                     $principal_id = $appointment->principal;
                                 }
-                                $model_report = $this->context->InvoiceGeneration($appointment->id, $principal_id, $est_id);
+                                $model_report = $this->context->InvoiceGeneration($appointment->id, $principal_id, $est_id,$duplicate_id);
+//                                var_dump($model_report);exit;
                                 ?>
-
                                 <td style="width: 25%;">Invoice Number: <?= $model_report->invoice_number ?></td>
                                 <?php
                                 if ($invoice_date != '') {
@@ -474,8 +474,13 @@ and open the template in the editor.
                                             ?></td>
                                         <td style="width: 12%;text-align:right;"><?= Yii::$app->SetValues->NumberFormat($close_estimate->fda); ?></td>
                                         <?php
-                                        if ($close_estimate->tax_amount > 0 && $close_estimate->fda > 0) {
-                                            $percent = ($close_estimate->tax_amount / $close_estimate->fda) * 100;
+//                                        if ($close_estimate->tax_amount > 0 && $close_estimate->fda > 0) {
+//                                            $percent = ($close_estimate->tax_amount / $close_estimate->fda) * 100;
+//                                        } else {
+//                                            $percent = 0;
+//                                        }
+                                        if ($close_estimate->tax_id != '') {
+                                            $percent = common\models\TaxMaster::findOne($close_estimate->tax_id)->value;
                                         } else {
                                             $percent = 0;
                                         }
@@ -802,7 +807,7 @@ and open the template in the editor.
         <?php
         if ($save) {
             ?>
-            <a href="<?= Yii::$app->homeUrl ?>appointment/close-estimate/save-all-report?appintment_id=<?= $appointment->id ?>&&principal_id=<?= $principp ?>&&est_id=<?= $est_id ?>"><button onclick="" style="font-weight: bold !important;">Save</button></a>
+            <a href="<?= Yii::$app->homeUrl ?>appointment/close-estimate/save-all-report?appintment_id=<?= $appointment->id ?>&&principal_id=<?= $principp ?>&&est_id=<?= $est_id ?>&&duplicate_id=<?= $duplicate_id ?>"><button onclick="" style="font-weight: bold !important;">Save</button></a>
             <?php
         }
         ?>

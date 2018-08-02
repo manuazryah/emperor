@@ -58,11 +58,28 @@ $token = Yii::$app->request->get('token');
                                 $invoice_type = $value->invoice_type;
                             }
                         }
+                        $duplicates = FdaReport::find()->orderBy(['report_id' => SORT_DESC])->where(['appointment_id' => $appointment->id])->all();
                         ?>
                         <?= Html::beginForm(['close-estimate/report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');"]) ?>
                         <input type="hidden" name="app_id" value="<?= $appointment->id ?>">
                         <div class="col-md-3">
                             <input type="text" name="invoice_date" value="" class="form-control" placeholder="Invoice Date"/>
+                        </div>
+                        <div class="col-md-3">
+                            <select name = "report_id" id = "report_id" class="form-control">
+                                <option value="" selected = "selected">Duplicate Invoice</option>
+                                <?php
+                                if (!empty($duplicates)) {
+                                    foreach ($duplicates as $duplicate) {
+                                        if (!empty($duplicate)) {
+                                            ?>
+                                            <option value="<?= $duplicate->report_id ?>"><?= $duplicate->report_id ?></option>
+                                        <?php
+                                        }
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                         <?php
                         $principals = CloseEstimate::find()->select('principal')->distinct()->where(['apponitment_id' => $appointment->id])->all();
@@ -97,49 +114,49 @@ $token = Yii::$app->request->get('token');
                         ?>
                         <div class="col-md-3">
                             <?= Html::submitButton('<i class="fa-print"></i><span>Generate Final DA</span>', ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
-                            <?= Html::endForm() ?>
-                            <?php
-                            ?>
+<?= Html::endForm() ?>
+                    <?php
+                    ?>
                         </div>
                     </div>
-                    <?php
-                    ?>
-                </div>
                 <?php
-                if (empty($estimates)) {
-                    ?>
-                    <div style="float:left;margin-right: 10px;">
-                        <?php
-                        echo Html::a('<span>Load Estimated Proforma</span>', ['close-estimate/insert-close-estimate', 'id' => $appointment->id], ['class' => 'btn btn-secondary']);
+                ?>
+                </div>
+                    <?php
+                    if (empty($estimates)) {
                         ?>
+                    <div style="float:left;margin-right: 10px;">
+    <?php
+    echo Html::a('<span>Load Estimated Proforma</span>', ['close-estimate/insert-close-estimate', 'id' => $appointment->id], ['class' => 'btn btn-secondary']);
+    ?>
 
                     </div>
-                    <?php
-                }
-                ?>
+    <?php
+}
+?>
                 <ul class="estimat nav nav-tabs nav-tabs-justified">
                     <li>
-                        <?php
-                        echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Appointment</span>', ['appointment/update', 'id' => $appointment->id]);
-                        ?>
+<?php
+echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Appointment</span>', ['appointment/update', 'id' => $appointment->id]);
+?>
 
                     </li>
                     <li>
-                        <?php
-                        echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Estimated Proforma</span>', ['estimated-proforma/add', 'id' => $appointment->id]);
-                        ?>
+<?php
+echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Estimated Proforma</span>', ['estimated-proforma/add', 'id' => $appointment->id]);
+?>
 
                     </li>
                     <li>
-                        <?php
-                        echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Port call Data</span>', ['port-call-data/update', 'id' => $appointment->id]);
-                        ?>
+<?php
+echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Port call Data</span>', ['port-call-data/update', 'id' => $appointment->id]);
+?>
 
                     </li>
                     <li class="active">
-                        <?php
-                        echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Close Estimate</span>', ['close-estimate/add', 'id' => $appointment->id]);
-                        ?>
+<?php
+echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Close Estimate</span>', ['close-estimate/add', 'id' => $appointment->id]);
+?>
 
                     </li>
                 </ul>
@@ -256,7 +273,7 @@ $token = Yii::$app->request->get('token');
                                             ?>
                                                         </span>
                                                 </td>-->
-                                                <!--<td><?php // $estimate->total;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ?></td>-->
+                                                <!--<td><?php // $estimate->total;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ?></td>-->
                                             <td class="edit_dropdown" drop_id="closeestimate-invoice_type" id="<?= $estimate->id ?>-invoice_type" val="<?= $estimate->invoice_type ?>">
                                                 <?php
                                                 if ($estimate->invoice_type == '') {
@@ -307,12 +324,12 @@ $token = Yii::$app->request->get('token');
                                             </td>
                                             <td>
                                                 <?= Html::a('<i class="fa fa-pencil"></i>', ['/appointment/close-estimate/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '']) ?>
-                                                <?= Html::a('<i class="fa-remove"></i>', ['/appointment/close-estimate/delete-close-estimate', 'id' => $estimate->id], ['class' => '', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
+        <?= Html::a('<i class="fa-remove"></i>', ['/appointment/close-estimate/delete-close-estimate', 'id' => $estimate->id], ['class' => '', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
                                                 <?= Html::a('<i class="fa fa-database"></i>', ['/appointment/close-estimate-sub-service/add', 'id' => $estimate->id], ['class' => '', 'target' => '_blank']) ?>
                                                 <?php // Html::a('<i class="fa-print"></i>', ['close-estimate/fda-report'], ['class' => '', 'onclick' => "window.open('fda-report?id=$estimate->apponitment_id & estid=$estimate->id', 'newwindow', 'width=1200, height=500');return false;"])  ?>
                                             </td>
                                             <td>
-                                                <?= Html::beginForm(['close-estimate/selected-report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');"]) ?>
+                                            <?= Html::beginForm(['close-estimate/selected-report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');"]) ?>
                                                 <input type="checkbox" name="invoice_type[<?= $estimate->id ?>]" value="<?= $estimate->invoice_type ?>">
                                                 <input type="hidden" name="app_id" value="<?= $appointment->id ?>">
                                             </td>
@@ -325,14 +342,14 @@ $token = Yii::$app->request->get('token');
                                             ?>
                                         </tr>
 
-                                    <?php } ?>
+    <?php } ?>
                                     <tr>
                                         <td></td>
                                         <td colspan="4"> <b>Sub Total</b></td>
                                         <td style=""><?php echo Yii::$app->SetValues->NumberFormat($epda_sub_total) . '/-'; ?></td>
                                         <td style=""><?php echo Yii::$app->SetValues->NumberFormat($fda_sub_total) . '/-'; ?>
                                         <td></td>
-                                        <!--<td style="font-weight: bold;"><?php //echo $grandtotal . '/-';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ?></td>-->
+                                        <!--<td style="font-weight: bold;"><?php //echo $grandtotal . '/-';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ?></td>-->
                                         <td colspan=""></td>
                                         <td colspan=""></td>
                                         <td colspan=""></td>
@@ -340,28 +357,28 @@ $token = Yii::$app->request->get('token');
                                         <td colspan=""></td>
                                         <td colspan=""></td>
                                     </tr>
-                                    <?php
-                                }
-                                ?>
+    <?php
+}
+?>
                                 <tr>
                                     <td></td>
                                     <td colspan="4"> <b>GRAND TOTAL</b></td>
                                     <td style="font-weight: bold;"><?php echo Yii::$app->SetValues->NumberFormat($epdatotal) . '/-'; ?></td>
                                     <td style="font-weight: bold;"><?php echo Yii::$app->SetValues->NumberFormat($fdatotal) . '/-'; ?>
                                     <td></td>
-                                    <!--<td style="font-weight: bold;"><?php //echo $grandtotal . '/-';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ?></td>-->
+                                    <!--<td style="font-weight: bold;"><?php //echo $grandtotal . '/-';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ?></td>-->
                                     <td colspan=""></td>
                                     <td colspan=""></td>
                                     <td colspan=""></td>
                                     <td colspan=""></td>
                                     <td colspan=""></td>
                                     <td colspan="">
-                                        <?= Html::submitButton('<i class="fa-print"></i><span>FDA</span>', ['class' => 'btn btn-secondary btn-icon btn-icon-standalone']) ?>
-                                        <?= Html::endForm() ?>
+<?= Html::submitButton('<i class="fa-print"></i><span>FDA</span>', ['class' => 'btn btn-secondary btn-icon btn-icon-standalone']) ?>
+                                    <?= Html::endForm() ?>
                                     </td>
                                 </tr>
                                 <tr class="formm">
-                                    <?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(); ?>
                                     <td></td>
                                     <td><?= $form->field($model, 'service_id')->dropDownList(ArrayHelper::map(Services::findAll(['status' => 1]), 'id', 'service'), ['prompt' => '-Service-'])->label(false); ?></td>
                                     <td><?= $form->field($model, 'supplier')->dropDownList(ArrayHelper::map(Contacts::find()->where(new Expression('FIND_IN_SET(:contact_type, contact_type)'))->addParams([':contact_type' => 4])->all(), 'id', 'name'), ['prompt' => '-Supplier-'])->label(false); ?></td>
@@ -390,15 +407,15 @@ $token = Yii::$app->request->get('token');
                                     } else {
                                         ?>
                                         <td><?= $form->field($model, 'principal')->dropDownList(ArrayHelper::map(Debtor::findAll(['status' => 1, 'id' => explode(',', $appointment->principal)]), 'id', 'principal_id'), ['prompt' => '-Principal-'])->label(false); ?></td>
-                                        <?php
-                                    }
-                                    ?>
+    <?php
+}
+?>
                                     <td><?= $form->field($model, 'comments')->textInput(['placeholder' => 'EPDA Comments'])->label(false) ?></td>
                                     <td><?= $form->field($model, 'comment_to_fda')->textInput(['placeholder' => 'FDA Comments'])->label(false) ?></td>
                                     <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
                                     </td>
                                     <td></td>
-                                    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
                                 </tr>
                                 <tr></tr>
 
@@ -419,12 +436,12 @@ $token = Yii::$app->request->get('token');
                             $model_upload->type = Yii::$app->params['closePath'];
                             ?>
                             <?= $form->field($model_upload, 'filee[]')->fileInput(['multiple' => true, 'class' => 'upload-box']) ?>
-                            <?= $form->field($model_upload, 'appointment_id')->hiddenInput()->label(false) ?>
+<?= $form->field($model_upload, 'appointment_id')->hiddenInput()->label(false) ?>
                             <?= $form->field($model_upload, 'type')->hiddenInput()->label(false) ?>
                             <?= Html::submitButton('<i class="fa fa-upload"></i><span>Upload</span>', ['class' => 'btn btn-secondary btn-icon btn-icon-standalone']) ?>
 
 
-                            <?php ActiveForm::end() ?>
+<?php ActiveForm::end() ?>
                         </div>
                         <br/><br/>
                     </div>
@@ -527,7 +544,7 @@ $token = Yii::$app->request->get('token');
 
 
                 </div>
-                <?php //Pjax::end();                          ?>
+<?php //Pjax::end();                            ?>
             </div>
         </div>
         <div class="panel panel-default">
@@ -535,7 +552,7 @@ $token = Yii::$app->request->get('token');
                 <h2  class="appoint-title panel-title">Previously Generated FDA'S  &  Uploaded Files</h2>
 
             </div>
-            <?php //Pjax::begin();   ?>
+<?php //Pjax::begin();     ?>
             <div class="panel-body">
                 <div class="row">
 
@@ -558,7 +575,7 @@ $token = Yii::$app->request->get('token');
                                 <div class="row" style="width: 180px;display: inline-block;" title="<?= $princip_name1 ?>">
                                     <div class="upload_file_list" style="float:left;height: 55px;">
                                         <div>
-                                            <!--<span class=""><?php // echo Html::a($invoice_number, ['/appointment/close-estimate/show-report'], ['onclick' => "window.open('/appointment/close-estimate/show-report?id=$estmate_report->id', 'newwindow', 'width=750, height=500');return false;"]) . '&nbsp;&nbsp;';                                                 ?></span>-->
+                                            <!--<span class=""><?php // echo Html::a($invoice_number, ['/appointment/close-estimate/show-report'], ['onclick' => "window.open('/appointment/close-estimate/show-report?id=$estmate_report->id', 'newwindow', 'width=750, height=500');return false;"]) . '&nbsp;&nbsp;';                                                    ?></span>-->
                                             <span class=""><?php echo Html::a($invoice_number, ['/appointment/close-estimate/show-report', 'id' => $estmate_report->id], ['target' => "_blank"]) . '&nbsp;&nbsp;'; ?></span>
                                         </div>
                                         <div style="color:#676262;">
@@ -594,7 +611,7 @@ $token = Yii::$app->request->get('token');
                                 <div class="row" style="width: 210px;display: inline-block;" title="<?= $princip_name ?>">
                                     <div class="upload_file_list" style="float:left;height: 55px;">
                                         <div>
-                                            <!--<span class=""><?php // echo Html::a($estmate_all_report->invoice_number, ['/appointment/close-estimate/show-all-report'], ['onclick' => "window.open('/appointment/close-estimate/show-all-report?id=$estmate_all_report->id', 'newwindow', 'width=1200, height=500');return false;"]) . '&nbsp;&nbsp;';                                               ?></span>-->
+                                            <!--<span class=""><?php // echo Html::a($estmate_all_report->invoice_number, ['/appointment/close-estimate/show-all-report'], ['onclick' => "window.open('/appointment/close-estimate/show-all-report?id=$estmate_all_report->id', 'newwindow', 'width=1200, height=500');return false;"]) . '&nbsp;&nbsp;';                                                  ?></span>-->
                                             <span class=""><?php echo Html::a($estmate_all_report->invoice_number, ['/appointment/close-estimate/show-all-report', 'id' => $estmate_all_report->id], ['target' => "_blank"]) . '&nbsp;&nbsp;'; ?></span>
                                         </div>
                                         <div style="color:#676262;">
@@ -611,9 +628,9 @@ $token = Yii::$app->request->get('token');
                                         </div>
                                     </div>
                                 </div>
-                                <?php
-                            }
-                            ?>
+    <?php
+}
+?>
                         </div>
                     </div>
                 </div>

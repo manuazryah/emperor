@@ -18,7 +18,7 @@ AppAsset::register($this);
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Xenon Boostrap Admin Panel" />
+        <meta name="description" content="Emperoor Admin Panel" />
         <meta name="author" content="" />
         <title>Emperor Admin</title>
         <script src="<?= Yii::$app->homeUrl; ?>js/jquery-1.11.1.min.js"></script>
@@ -251,6 +251,10 @@ AppAsset::register($this);
                                     <?= Html::a('Delivery Order', ['/invoice/delivery-order/index'], ['class' => 'title']) ?>
                                 </li>
 
+                                <li>
+                                    <?= Html::a('Receipt', ['/invoice/receipt/index'], ['class' => 'title']) ?>
+                                </li>
+
                             </ul>
                         </li>
 
@@ -289,9 +293,6 @@ AppAsset::register($this);
                             <?php
                         }
                         ?>
-                        <li>
-                            <?= Html::a('<i class="fa-home"></i> <span class="title">Invoice Report</span>', ['/reports/invoices'], ['class' => 'title']) ?>
-                        </li>
                     </ul>
 
                 </div>
@@ -317,7 +318,7 @@ AppAsset::register($this);
                         <li class="dropdown hover-line hover-line-notify">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Notifications">
                                 <i class="fa-bell-o"></i>
-                                <!--<span class="badge badge-purple" id="notify-count"><?php // $notification_count                             ?></span>-->
+                                <!--<span class="badge badge-purple" id="notify-count"><?php // $notification_count                               ?></span>-->
                                 <span class="badge badge-purple" id="notify-count" style="color: #7c39bc;">.</span>
                             </a>
                             <ul class="dropdown-menu notifications">
@@ -368,7 +369,7 @@ AppAsset::register($this);
                         <li class="dropdown hover-line hover-line-task">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="My Tasks">
                                 <i class="fa-envelope-o"></i>
-                                <!--<span class="badge badge-green" id="my-task-count"><?php // $my_tasks_count                            ?></span>-->
+                                <!--<span class="badge badge-green" id="my-task-count"><?php // $my_tasks_count                              ?></span>-->
                                 <span class="badge badge-green" id="my-task-count" style="color: #8dc63e;">.</span>
                             </a>
                             <ul class="dropdown-menu my-task" style="width: 370px;">
