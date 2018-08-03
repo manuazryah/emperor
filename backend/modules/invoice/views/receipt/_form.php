@@ -60,7 +60,7 @@ if ($model->isNewRecord) {
             ?>
         </div>
         <div class="col-md-4">
-            <?= $form->field($model, 'being')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'being')->dropDownList(['Bunker Coordination Charge – Bulk' => 'Bunker Coordination Charge – Bulk', 'Bunker / DG Approval  – Drum' => 'Bunker / DG Approval  – Drum', 'Permit to Work Charges (PTW)' => 'Permit to Work Charges (PTW)', 'DG Approval – Chemical / Cylinder / Battery etc' => 'DG Approval – Chemical / Cylinder / Battery etc', 'CID Clearance Charge' => 'CID Clearance Charge', 'Agent Coordination Charge' => 'Agent Coordination Charge', 'Settlement Against Invoice' => 'Settlement Against Invoice']) ?>
         </div>
         <div class="col-md-4">
             <?= $form->field($model, 'vessel_name')->textInput(['maxlength' => true]) ?>

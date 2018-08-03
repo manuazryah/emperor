@@ -111,4 +111,12 @@ class ReceiptController extends Controller {
         }
     }
 
+    public function actionReports($id) {
+        $invoice = Receipt::find()->where(['id' => $id])->one();
+        echo $this->renderPartial('report', [
+            'invoice' => $invoice,
+        ]);
+        exit;
+    }
+
 }
