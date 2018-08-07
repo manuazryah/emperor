@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Receipt */
@@ -21,13 +22,13 @@ if ($model->isNewRecord) {
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?= $form->field($model, 'receipt_no')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?=
             $form->field($model, 'date')->widget(\yii\jui\DatePicker::classname(), [
                 //'language' => 'ru',
@@ -37,19 +38,22 @@ if ($model->isNewRecord) {
             ])
             ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?= $form->field($model, 'appointment_no')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-4">
-            <?= $form->field($model, 'received_from_name')->textInput(['maxlength' => true]) ?>
+    </div>
+    <div class="row">
+        <?php $contacts = ArrayHelper::map(\common\models\Contacts::findAll(['status' => 1]), 'name', 'name'); ?>
+        <div class="col-md-3 col-sm-6 col-sx-12">
+            <?= $form->field($model, 'received_from_name')->dropDownList($contacts, ['prompt' => '- Choose -']) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?= $form->field($model, 'cheque_no')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?= $form->field($model, 'bank_name')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?=
             $form->field($model, 'cheque_date')->widget(\yii\jui\DatePicker::classname(), [
                 //'language' => 'ru',
@@ -59,13 +63,15 @@ if ($model->isNewRecord) {
             ])
             ?>
         </div>
-        <div class="col-md-4">
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?= $form->field($model, 'being')->dropDownList(['Bunker Coordination Charge – Bulk' => 'Bunker Coordination Charge – Bulk', 'Bunker / DG Approval  – Drum' => 'Bunker / DG Approval  – Drum', 'Permit to Work Charges (PTW)' => 'Permit to Work Charges (PTW)', 'DG Approval – Chemical / Cylinder / Battery etc' => 'DG Approval – Chemical / Cylinder / Battery etc', 'CID Clearance Charge' => 'CID Clearance Charge', 'Agent Coordination Charge' => 'Agent Coordination Charge', 'Settlement Against Invoice' => 'Settlement Against Invoice']) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?= $form->field($model, 'vessel_name')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-sm-6 col-sx-12">
             <?= $form->field($model, 'port')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
@@ -79,3 +85,27 @@ if ($model->isNewRecord) {
     <?php ActiveForm::end(); ?>
 
 </div>
+<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2.css">
+<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2-bootstrap.css">
+<script src="<?= Yii::$app->homeUrl; ?>js/select2/select2.min.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($)
+    {
+        $("#receipt-received_from_name").select2({
+            //placeholder: 'Select your country...',
+            allowClear: true
+        }).on('select2-open', function ()
+        {
+            // Adding Custom Scrollbar
+            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+        $("#receipt-being").select2({
+            //placeholder: 'Select your country...',
+            allowClear: true
+        }).on('select2-open', function ()
+        {
+            // Adding Custom Scrollbar
+            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+    });
+</script>
